@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand-black: #040108;
+    --brand-dark: #080312;
+    --brand-surface: #0f061e;
+    --brand-violet: #8b3bf2;
+    --brand-lavender: #d8b4fe;
+  }
+
+  body {
+    background-color: #040108;
+    color: #fbfaff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Editorial custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #040108;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(139, 59, 242, 0.28);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(192, 132, 252, 0.45);
+  }
+}
+
+@layer components {
+  /* Liquid Glass Core Utilities */
+  .liquid-glass {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(139, 59, 242, 0.05) 50%,
+      rgba(20, 7, 40, 0.65) 100%
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(216, 180, 254, 0.15);
+    box-shadow: 
+      0 12px 36px -4px rgba(4, 1, 8, 0.8),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 1px 0 rgba(139, 59, 242, 0.2);
+  }
+
+  .liquid-glass-pill {
+    background: rgba(12, 5, 24, 0.72);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(216, 180, 254, 0.18);
+    box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.37),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .liquid-glass-card {
+    background: linear-gradient(
+      180deg,
+      rgba(25, 11, 46, 0.5) 0%,
+      rgba(11, 4, 22, 0.65) 100%
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(216, 180, 254, 0.1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .liquid-glass-card:hover {
+    border-color: rgba(216, 180, 254, 0.3);
+    box-shadow: 
+      0 20px 40px -15px rgba(114, 38, 196, 0.25),
+      inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  /* Gradients */
+  .text-gradient-lavender {
+    background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 50%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-silver {
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Atmospheric glow */
+  .radial-glow-lavender {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(139, 59, 242, 0.18) 0%,
+      rgba(56, 15, 104, 0.08) 45%,
+      transparent 70%
+    );
+  }
+
+  .radial-glow-violet {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(114, 38, 196, 0.25) 0%,
+      rgba(20, 5, 42, 0) 70%
+    );
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

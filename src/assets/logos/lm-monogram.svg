@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- L Component -->
+  <path d="M 24 24 L 38 24 L 38 82 L 62 82 L 62 96 L 24 96 Z" fill="url(#lmGradientLavender)" />
+  
+  <!-- M Component -->
+  <path d="M 52 96 L 66 96 L 66 52 L 78 74 L 88 74 L 100 52 L 100 96 L 114 96 L 114 24 L 98 24 L 83 54 L 68 24 L 52 24 Z" fill="url(#lmGradientWhite)" />
+  
+  <defs>
+    <linearGradient id="lmGradientLavender" x1="24" y1="24" x2="62" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FAF5FF" />
+      <stop offset="60%" stop-color="#D8B4FE" />
+      <stop offset="100%" stop-color="#8B3BF2" />
+    </linearGradient>
+    <linearGradient id="lmGradientWhite" x1="52" y1="24" x2="114" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#F3E8FF" />
+      <stop offset="100%" stop-color="#C084FC" />
+    </linearGradient>
+  </defs>
+</svg>
