@@ -8,7 +8,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 export const App: React.FC = () => {
   return (
     <LanguageProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/le-meilleur">
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
