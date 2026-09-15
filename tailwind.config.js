@@ -45,10 +45,10 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Syne', 'sans-serif'],
-        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-        mono: ['"Space Mono"', 'monospace'],
-      },
+  display: ['Unbounded', 'sans-serif'],
+  sans: ['Manrope', 'sans-serif'],
+  mono: ['Space Mono', 'monospace'],
+},
       letterSpacing: {
         tightest: '-0.04em',
         tighter: '-0.02em',

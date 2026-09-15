@@ -49,14 +49,18 @@ export const Navbar: React.FC = () => {
         }`}
       >
         <nav
-          className={`w-full transition-all duration-500 flex items-center justify-between ${
+          className={`relative w-full isolate [backface-visibility:hidden] [transform:translateZ(0)] transition-[max-width,padding,box-shadow,background-color] duration-500 ease-out flex items-center justify-between ${
             isScrolled
               ? 'max-w-4xl rounded-full liquid-glass-pill py-2 px-4 sm:px-6 shadow-[0_10px_35px_rgba(0,0,0,0.6)]'
-              : 'max-w-6xl'
+              : 'max-w-6xl shadow-none'
           }`}
         >
           {/* Brand Logo */}
-          <Link to="/" className="group flex items-center gap-2.5">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="group flex items-center gap-2.5"
+          >
             <Logo
               size="sm"
               variant={isScrolled ? 'monogram' : 'full'}
@@ -66,7 +70,7 @@ export const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-[0.2em] uppercase">
+          <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-[0.2em] uppercase md:absolute md:left-1/2 md:-translate-x-1/2 whitespace-nowrap">
             <button
               onClick={() => handleNavClick('studio')}
               className="text-brand-lavender-200/80 hover:text-white transition-colors duration-300 relative py-1 uppercase"
@@ -125,15 +129,6 @@ export const Navbar: React.FC = () => {
                 <span className="relative z-10 font-medium">EN</span>
               </button>
             </div>
-
-            {/* Direct Contact CTA */}
-            <a
-              href="mailto:contact@lemeilleur.studio"
-              className="group inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full liquid-glass text-xs font-mono text-white hover:border-brand-lavender-400/40 hover:bg-brand-purple-900/40 transition-all uppercase tracking-wider"
-            >
-              <span>{t.nav.contact}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-brand-lavender-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
           </div>
 
           {/* Mobile Actions */}

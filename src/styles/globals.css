@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,7 +17,7 @@
   body {
     background-color: #040108;
     color: #fbfaff;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Manrope', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -24,17 +27,21 @@
   ::-webkit-scrollbar {
     width: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: #040108;
   }
+
   ::-webkit-scrollbar-thumb {
     background: rgba(139, 59, 242, 0.28);
     border-radius: 9999px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(192, 132, 252, 0.45);
   }
 }
+
 
 @layer components {
   /* Liquid Glass Core Utilities */
