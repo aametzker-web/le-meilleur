@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Navbar } from '../navigation/Navbar';
-import { Footer } from './Footer';
+
 
 export const Layout: React.FC = () => {
   const location = useLocation();
@@ -26,15 +25,14 @@ export const Layout: React.FC = () => {
       <div className="fixed bottom-1/3 right-10 w-[600px] h-[600px] radial-glow-violet pointer-events-none -z-20 opacity-20" />
 
       {/* Sticky Liquid Glass Navbar */}
-      <Navbar />
+      
 
       {/* Page Content */}
       <div className="flex-1 w-full pt-20">
         <Outlet />
       </div>
 
-      {/* Unified Minimal Footer */}
-      <Footer />
+      
     </div>
   );
 };

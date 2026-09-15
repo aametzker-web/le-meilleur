@@ -1,9 +1,17 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
 import { ArrowUpRight } from 'lucide-react';
-import { fadeUpVariant, staggerContainerVariant } from '../motion/MotionVariants';
+import {
+  fadeUpVariant,
+  staggerContainerVariant,
+} from '../motion/MotionVariants';
 
 interface HeroProps {
   hasLoaded?: boolean;
@@ -11,146 +19,579 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
   const { t } = useLanguage();
+  const [isDesktop, setIsDesktop] = useState(false);
 
-  const handleScrollDown = () => {
-    const nextSection = document.getElementById('studio');
-    nextSection?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const smoothX = useSpring(mouseX, {
+    stiffness: 80,
+    damping: 20,
+    mass: 0.5,
+  });
+
+  const smoothY = useSpring(mouseY, {
+    stiffness: 80,
+    damping: 20,
+    mass: 0.5,
+  });
+
+  const glowX = useTransform(smoothX, [-0.5, 0.5], [-25, 25]);
+  const glowY = useTransform(smoothY, [-0.5, 0.5], [-18, 18]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)');
+
+    const update = () => setIsDesktop(media.matches);
+
+    update();
+    media.addEventListener('change', update);
+
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      mouseX.set(event.clientX / window.innerWidth - 0.5);
+      mouseY.set(event.clientY / window.innerHeight - 0.5);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isDesktop, mouseX, mouseY]);
 
   return (
-    <section className="relative min-h-[100svh] flex flex-col items-center justify-between px-4 sm:px-6 pt-6 sm:pt-12 pb-8 sm:pb-16 overflow-hidden select-none">
+    <section
+      className="
+  relative
+  z-10
+  mx-auto
+  flex
+  w-full
+  min-w-0
+  max-w-4xl
+  -translate-y-3
+  flex-col
+  items-center
+  justify-center
+  text-center
+  sm:-translate-y-4
+  md:max-w-5xl
+  md:-translate-y-5
+  lg:max-w-6xl
+  lg:-translate-y-6
+"
+    >
+      {/* Ambient atmosphere */}
 
-      {/* Ambient Backdrop Lights */}
-      <div className="absolute top-[22%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[300px] sm:w-[500px] sm:h-[400px] lg:w-[800px] lg:h-[500px] radial-glow-violet opacity-60 pointer-events-none -z-10" />
+      <motion.div
+        style={isDesktop ? { x: glowX, y: glowY } : undefined}
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          -z-10
+          h-[200px]
+          w-[240px]
+          -translate-x-1/2
+          -translate-y-1/2
+          radial-glow-violet
+          opacity-35
+          sm:h-[280px]
+          sm:w-[420px]
+          lg:h-[380px]
+          lg:w-[640px]
+        "
+      />
 
-      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-[260px] h-[240px] sm:w-[400px] sm:h-[300px] lg:w-[500px] lg:h-[400px] radial-glow-lavender opacity-45 pointer-events-none -z-10" />
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-1/2
+          top-1/2
+          -z-10
+          h-[150px]
+          w-[180px]
+          -translate-x-1/2
+          -translate-y-1/2
+          radial-glow-lavender
+          opacity-15
+          sm:h-[220px]
+          sm:w-[300px]
+          lg:h-[280px]
+          lg:w-[460px]
+        "
+      />
 
-      {/* Subtle Geometric Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(216,180,254,0.06)_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none -z-20 opacity-60" />
+      {/* Subtle grid */}
 
-      {/* Hero Content */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          inset-0
+          -z-20
+          opacity-[0.25]
+          bg-[radial-gradient(rgba(216,180,254,0.055)_1px,transparent_1px)]
+          [background-size:28px_28px]
+        "
+      />
+
+      {/* Top line */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          top-0
+          left-1/2
+          h-px
+          w-[min(620px,78vw)]
+          -translate-x-1/2
+          bg-gradient-to-r
+          from-transparent
+          via-brand-lavender-300/20
+          to-transparent
+          lg:w-[min(820px,72vw)]
+        "
+      />
+
+      {/* Main composition */}
+
       <motion.div
         variants={staggerContainerVariant}
         initial="hidden"
         animate={hasLoaded ? 'visible' : 'hidden'}
-        className="w-full max-w-5xl mx-auto flex flex-col items-center text-center my-auto pt-4 sm:pt-6"
+        className="
+          relative
+          z-10
+          mx-auto
+          flex
+          w-full
+          min-w-0
+          max-w-4xl
+          -translate-y-2
+          flex-col
+          items-center
+          justify-center
+          text-center
+          sm:-translate-y-3
+          md:max-w-5xl
+          md:-translate-y-4
+          lg:max-w-6xl
+          lg:-translate-y-5
+        "
       >
+        {/* Discipline */}
 
-        {/* Discipline Pill */}
         <motion.div
           variants={fadeUpVariant}
-          className="mb-4 sm:mb-6"
+          className="mb-3 sm:mb-4 md:mb-5"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 rounded-full liquid-glass-pill text-[9px] sm:text-[11px] font-mono tracking-[0.2em] sm:tracking-[0.25em] text-brand-lavender-300 uppercase shadow-sm max-w-full">
-            <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-brand-lavender-400 animate-pulse" />
-            <span className="truncate">
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-brand-lavender-300/15
+              bg-white/[0.035]
+              px-3
+              py-1.5
+              backdrop-blur-xl
+              shadow-[0_6px_25px_rgba(139,59,242,0.07)]
+              md:px-3.5
+              md:py-2
+            "
+          >
+            <span className="relative flex h-1.5 w-1.5 shrink-0 md:h-2 md:w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-lavender-300 opacity-40" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-lavender-300 md:h-2 md:w-2" />
+            </span>
+
+            <span
+              className="
+                font-mono
+                text-[8px]
+                uppercase
+                tracking-[0.2em]
+                text-brand-lavender-200/80
+                sm:text-[9px]
+                md:text-[10px]
+              "
+            >
               {t.hero.disciplines}
             </span>
           </div>
         </motion.div>
 
-        {/* Crystal Emblem */}
+        {/* Crystal emblem */}
+
         <motion.div
           variants={fadeUpVariant}
-          className="my-2 sm:my-4 relative"
+          className="
+            relative
+            mb-3
+            flex
+            w-full
+            items-center
+            justify-center
+            sm:mb-4
+            md:mb-5
+          "
         >
+          {/* Centered glow */}
+
+          <div
+            className="
+              pointer-events-none
+              absolute
+              left-1/2
+              top-1/2
+              h-32
+              w-32
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              bg-brand-violet-500/10
+              blur-3xl
+              sm:h-40
+              sm:w-40
+              md:h-48
+              md:w-48
+            "
+          />
+
           <motion.div
-            animate={{
-              y: [-6, 6, -6],
-            }}
+            animate={{ y: [-2, 2, -2] }}
             transition={{
-              duration: 5.5,
+              duration: 6,
               ease: 'easeInOut',
               repeat: Infinity,
             }}
-            className="p-4 sm:p-7 rounded-[2rem] sm:rounded-[2.5rem] liquid-glass relative shadow-[0_16px_45px_rgba(114,38,196,0.35)] flex items-center justify-center border border-brand-lavender-400/25"
+            className="
+              relative
+              flex
+              shrink-0
+              items-center
+              justify-center
+              overflow-hidden
+              rounded-[1.3rem]
+              border
+              border-white/[0.11]
+              bg-white/[0.03]
+              p-3
+              backdrop-blur-2xl
+              shadow-[0_14px_45px_rgba(114,38,196,0.18)]
+              sm:rounded-[1.5rem]
+              sm:p-3.5
+              md:rounded-[1.6rem]
+              md:p-4
+            "
           >
+            {/* Glass reflection */}
+
+            <motion.div
+              animate={{ x: ['-120%', '120%'] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatDelay: 3,
+                ease: 'easeInOut',
+              }}
+              className="
+                pointer-events-none
+                absolute
+                top-0
+                bottom-0
+                w-12
+                -skew-x-12
+                bg-gradient-to-r
+                from-transparent
+                via-white/[0.06]
+                to-transparent
+                md:w-16
+              "
+            />
+
+            {/* Inner glass border */}
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                inset-[1px]
+                rounded-[1.2rem]
+                border
+                border-brand-lavender-300/[0.06]
+                md:rounded-[1.4rem]
+              "
+            />
+
             <Logo
               size="xl"
               variant="monogram"
               interactive
             />
 
-            <div className="absolute -inset-3 rounded-[2.5rem] sm:rounded-[3rem] bg-brand-lavender-400/15 blur-xl -z-10 pointer-events-none" />
+            {/* Top reflection */}
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                top-0
+                left-[18%]
+                right-[18%]
+                h-px
+                bg-gradient-to-r
+                from-transparent
+                via-white/25
+                to-transparent
+              "
+            />
           </motion.div>
         </motion.div>
 
         {/* Headline */}
+
         <motion.div
           variants={fadeUpVariant}
-          className="space-y-2 mt-3 sm:mt-6 px-2"
+          className="
+            relative
+            w-full
+            px-2
+            sm:px-4
+          "
         >
-          <h1 className="font-display font-extrabold text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-gradient-lavender uppercase max-w-full break-words">
+          <div
+            className="
+              pointer-events-none
+              absolute
+              -inset-x-12
+              -inset-y-5
+              -z-10
+              bg-brand-violet-500/[0.035]
+              blur-2xl
+              md:-inset-x-24
+              md:-inset-y-8
+            "
+          />
+
+          <h1
+            className="
+              mx-auto
+              max-w-full
+              break-words
+              font-display
+              text-[2rem]
+              font-extrabold
+              uppercase
+              leading-[0.92]
+              tracking-[-0.045em]
+              text-gradient-lavender
+              sm:text-4xl
+              md:max-w-5xl
+              md:text-6xl
+              lg:text-7xl
+              xl:text-[5rem]
+            "
+          >
             {t.hero.title}
           </h1>
 
-          <p className="font-mono text-[10px] sm:text-sm md:text-base tracking-[0.2em] sm:tracking-[0.25em] text-brand-lavender-300/80 uppercase">
-            {t.hero.subtitle}
-          </p>
+          <div
+            className="
+              mt-2
+              flex
+              items-center
+              justify-center
+              gap-2
+              sm:mt-2.5
+              md:mt-3
+              md:gap-3
+            "
+          >
+            <span className="h-px w-5 bg-brand-lavender-300/20 sm:w-7 md:w-10" />
+
+            <p
+              className="
+                font-mono
+                text-[8px]
+                uppercase
+                tracking-[0.2em]
+                text-brand-lavender-300/70
+                sm:text-[10px]
+                sm:tracking-[0.25em]
+                md:text-xs
+              "
+            >
+              {t.hero.subtitle}
+            </p>
+
+            <span className="h-px w-5 bg-brand-lavender-300/20 sm:w-7 md:w-10" />
+          </div>
         </motion.div>
 
-        {/* Supporting Statement */}
+        {/* Supporting statement */}
+
         <motion.p
           variants={fadeUpVariant}
-          className="mt-4 sm:mt-5 max-w-xl text-xs sm:text-sm md:text-base text-brand-lavender-200/75 font-light leading-relaxed px-3 sm:px-4"
+          className="
+            mt-3
+            max-w-md
+            px-5
+            text-[10px]
+            font-light
+            leading-[1.45]
+            text-brand-lavender-100/60
+            sm:mt-4
+            sm:text-xs
+            md:mt-5
+            md:max-w-2xl
+            md:px-0
+            md:text-sm
+            lg:text-base
+          "
         >
           {t.hero.tagline}
         </motion.p>
 
-        {/* CTAs */}
+        {/* Instagram CTA */}
+
         <motion.div
           variants={fadeUpVariant}
-          className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2.5 sm:gap-4 w-full sm:w-auto px-2 sm:px-0"
+          className="
+            mt-4
+            sm:mt-5
+            md:mt-6
+          "
         >
           <a
-            href="mailto:contact@lemeilleur.studio"
-            className="group inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 rounded-full liquid-glass-pill hover:bg-brand-purple-900/60 transition-all text-xs font-mono uppercase tracking-wider text-white shadow-md w-full sm:w-auto"
-          >
-            <span>{t.contact.email}</span>
-
-            <ArrowUpRight className="w-3.5 h-3.5 text-brand-lavender-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
-
-          <a
-            href="https://instagram.com/lemeilleur.studio"
+            href="https://www.instagram.com/lemeilleurdigital"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 rounded-full border border-brand-lavender-300/20 hover:border-brand-lavender-400/50 hover:bg-white/5 transition-all text-xs font-mono uppercase tracking-wider text-brand-lavender-200 w-full sm:w-auto"
+            className="
+              group
+              relative
+              inline-flex
+              items-center
+              gap-2.5
+              rounded-full
+              border
+              border-transparent
+              bg-white/[0.045]
+              px-3.5
+              py-2
+              font-mono
+              text-[9px]
+              uppercase
+              tracking-[0.18em]
+              text-brand-lavender-100
+              backdrop-blur-xl
+              shadow-[0_7px_25px_rgba(139,59,242,0.1)]
+              transition-all
+              duration-300
+              hover:bg-brand-lavender-300/[0.08]
+              hover:shadow-[0_8px_30px_rgba(139,59,242,0.22)]
+              active:scale-[0.97]
+              md:gap-3
+              md:px-4
+              md:py-2.5
+              md:text-[10px]
+            "
           >
+            {/* Instagram icon */}
+
+            <span
+              className="
+                relative
+                flex
+                h-3.5
+                w-3.5
+                items-center
+                justify-center
+                rounded-[4px]
+                border
+                border-brand-lavender-300/55
+                transition-transform
+                duration-300
+                group-hover:rotate-[-8deg]
+                md:h-4
+                md:w-4
+              "
+            >
+              <span
+                className="
+                  h-[5px]
+                  w-[5px]
+                  rounded-full
+                  border
+                  border-brand-lavender-300/55
+                  md:h-[6px]
+                  md:w-[6px]
+                "
+              />
+
+              <span
+                className="
+                  absolute
+                  right-[2px]
+                  top-[2px]
+                  h-[2px]
+                  w-[2px]
+                  rounded-full
+                  bg-brand-lavender-300/70
+                "
+              />
+            </span>
+
             <span>{t.contact.instagram}</span>
 
-            <ArrowUpRight className="w-3.5 h-3.5 text-brand-lavender-300" />
+            <ArrowUpRight
+              size={12}
+              strokeWidth={1.5}
+              className="
+                text-brand-lavender-300/50
+                transition-all
+                duration-300
+                group-hover:-translate-y-0.5
+                group-hover:translate-x-0.5
+                group-hover:text-white
+                md:h-[14px]
+                md:w-[14px]
+              "
+            />
+
+            {/* Glass shimmer */}
+
+            <span
+              className="
+                pointer-events-none
+                absolute
+                inset-0
+                rounded-full
+                bg-gradient-to-r
+                from-transparent
+                via-white/[0.05]
+                to-transparent
+                opacity-0
+                transition-opacity
+                duration-300
+                group-hover:opacity-100
+              "
+            />
           </a>
         </motion.div>
-
       </motion.div>
-
-      {/* Scroll Down Indicator */}
-      <motion.button
-        onClick={handleScrollDown}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="mt-6 sm:mt-10 flex flex-col items-center gap-2 text-brand-lavender-400/60 hover:text-white transition-colors group cursor-pointer"
-        aria-label="Scroll to explore"
-      >
-        <span className="font-mono text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] uppercase">
-          {t.hero.scrollDown}
-        </span>
-
-        <div className="w-4 h-7 rounded-full border border-brand-lavender-300/20 flex items-start justify-center p-1">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{
-              duration: 1.8,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-            className="w-1 h-1 rounded-full bg-brand-lavender-300"
-          />
-        </div>
-      </motion.button>
-
     </section>
   );
 };
