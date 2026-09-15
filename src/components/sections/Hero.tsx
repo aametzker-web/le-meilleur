@@ -7,7 +7,7 @@ import {
 } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import { Logo } from '../ui/Logo';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import {
   fadeUpVariant,
   staggerContainerVariant,
@@ -18,7 +18,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const [isDesktop, setIsDesktop] = useState(false);
 
   const mouseX = useMotionValue(0);
@@ -69,20 +69,103 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
     <section
       className="
         relative
-        flex min-h-[100svh]
-        w-full min-w-0
-        items-center justify-center
+        flex
+        min-h-[100svh]
+        w-full
+        min-w-0
+        items-center
+        justify-center
         overflow-hidden
-        select-none
         px-4
-        py-6
+        py-8
         sm:px-6
-        sm:py-8
+        sm:py-10
         md:px-10
-        md:py-10
+        md:py-12
         lg:px-16
       "
     >
+      {/* Language switch */}
+
+      <div
+        className="
+          absolute
+          right-4
+          top-4
+          z-30
+          sm:right-6
+          sm:top-6
+          md:right-10
+          md:top-8
+          lg:right-16
+          lg:top-8
+        "
+      >
+        <div
+          className="
+            flex
+            items-center
+            rounded-full
+            bg-white/[0.035]
+            p-1
+            backdrop-blur-xl
+            shadow-[0_8px_30px_rgba(139,59,242,0.08)]
+          "
+        >
+          <button
+            type="button"
+            onClick={() => setLanguage('ru')}
+            className={`
+              rounded-full
+              px-2.5
+              py-1.5
+              font-mono
+              text-[8px]
+              uppercase
+              tracking-[0.16em]
+              transition-all
+              duration-300
+              sm:px-3
+              sm:text-[9px]
+              ${
+                language === 'ru'
+                  ? 'bg-brand-lavender-300/[0.10] text-brand-lavender-100 shadow-[0_0_18px_rgba(216,180,254,0.08)]'
+                  : 'text-brand-lavender-100/35 hover:text-brand-lavender-100/70'
+              }
+            `}
+          >
+            RU
+          </button>
+
+          <span className="mx-0.5 h-3 w-px bg-brand-lavender-300/[0.08]" />
+
+          <button
+            type="button"
+            onClick={() => setLanguage('en')}
+            className={`
+              rounded-full
+              px-2.5
+              py-1.5
+              font-mono
+              text-[8px]
+              uppercase
+              tracking-[0.16em]
+              transition-all
+              duration-300
+              sm:px-3
+              sm:text-[9px]
+              ${
+                language === 'en'
+                  ? 'bg-brand-lavender-300/[0.10] text-brand-lavender-100 shadow-[0_0_18px_rgba(216,180,254,0.08)]'
+                  : 'text-brand-lavender-100/35 hover:text-brand-lavender-100/70'
+              }
+            `}
+          >
+            EN
+          </button>
+        </div>
+      </div>
+
       {/* Ambient atmosphere */}
 
       <motion.div
@@ -140,25 +223,6 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
         "
       />
 
-      {/* Top line */}
-
-      <div
-        className="
-          pointer-events-none
-          absolute
-          top-0
-          left-1/2
-          h-px
-          w-[min(620px,78vw)]
-          -translate-x-1/2
-          bg-gradient-to-r
-          from-transparent
-          via-brand-lavender-300/20
-          to-transparent
-          lg:w-[min(820px,72vw)]
-        "
-      />
-
       {/* Main composition */}
 
       <motion.div
@@ -178,11 +242,11 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
           items-center
           justify-center
           text-center
-          sm:-translate-y-3
+          sm:-translate-y-2
           md:max-w-5xl
-          md:-translate-y-4
+          md:-translate-y-3
           lg:max-w-6xl
-          lg:-translate-y-5
+          lg:-translate-y-3
         "
       >
         {/* Discipline */}
@@ -244,8 +308,6 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
             md:mb-5
           "
         >
-          {/* Centered glow */}
-
           <div
             className="
               pointer-events-none
@@ -306,8 +368,8 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
               className="
                 pointer-events-none
                 absolute
-                top-0
                 bottom-0
+                top-0
                 w-12
                 -skew-x-12
                 bg-gradient-to-r
@@ -344,9 +406,9 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
               className="
                 pointer-events-none
                 absolute
-                top-0
                 left-[18%]
                 right-[18%]
+                top-0
                 h-px
                 bg-gradient-to-r
                 from-transparent
@@ -588,6 +650,78 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
           </a>
         </motion.div>
       </motion.div>
+
+      {/* Scroll indicator */}
+
+      <motion.a
+        href="#studio"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: hasLoaded ? 1 : 0 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="
+          group
+          absolute
+          bottom-5
+          left-1/2
+          z-20
+          flex
+          -translate-x-1/2
+          flex-col
+          items-center
+          gap-1.5
+          text-center
+          sm:bottom-7
+          md:bottom-8
+        "
+      >
+        <span
+          className="
+            font-mono
+            text-[7px]
+            uppercase
+            tracking-[0.28em]
+            text-brand-lavender-100/30
+            transition-colors
+            duration-300
+            group-hover:text-brand-lavender-100/60
+            sm:text-[8px]
+          "
+        >
+          {language === 'ru' ? 'Листайте вниз' : 'Scroll down'}
+        </span>
+
+        <motion.span
+          animate={{ y: [0, 4, 0] }}
+          transition={{
+            duration: 1.8,
+            ease: 'easeInOut',
+            repeat: Infinity,
+          }}
+          className="
+            flex
+            h-6
+            w-6
+            items-center
+            justify-center
+            rounded-full
+            bg-white/[0.025]
+            text-brand-lavender-300/40
+            backdrop-blur-sm
+            transition-colors
+            duration-300
+            group-hover:bg-brand-lavender-300/[0.06]
+            group-hover:text-brand-lavender-300/70
+            sm:h-7
+            sm:w-7
+          "
+        >
+          <ChevronDown
+            size={12}
+            strokeWidth={1.4}
+            className="sm:h-[13px] sm:w-[13px]"
+          />
+        </motion.span>
+      </motion.a>
     </section>
   );
 };

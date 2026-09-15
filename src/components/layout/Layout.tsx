@@ -28,9 +28,9 @@ export const Layout: React.FC = () => {
       
 
       {/* Page Content */}
-      <div className="flex-1 w-full pt-20">
-        <Outlet />
-      </div>
+      <div className="flex-1 w-full">
+  <Outlet />
+</div>
 
       
     </div>
