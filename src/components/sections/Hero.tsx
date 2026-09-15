@@ -68,24 +68,20 @@ export const Hero: React.FC<HeroProps> = ({ hasLoaded = true }) => {
   return (
     <section
       className="
-  relative
-  z-10
-  mx-auto
-  flex
-  w-full
-  min-w-0
-  max-w-4xl
-  -translate-y-3
-  flex-col
-  items-center
-  justify-center
-  text-center
-  sm:-translate-y-4
-  md:max-w-5xl
-  md:-translate-y-5
-  lg:max-w-6xl
-  lg:-translate-y-6
-"
+        relative
+        flex min-h-[100svh]
+        w-full min-w-0
+        items-center justify-center
+        overflow-hidden
+        select-none
+        px-4
+        py-6
+        sm:px-6
+        sm:py-8
+        md:px-10
+        md:py-10
+        lg:px-16
+      "
     >
       {/* Ambient atmosphere */}
 
