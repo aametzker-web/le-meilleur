@@ -3,7 +3,6 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/le-meilleur/',
   plugins: [react()],
   resolve: {
     alias: {
